@@ -1,0 +1,175 @@
+﻿@model List<Product>
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "productsOfCategory";
+    Layout = "~/Views/Shared/_CustomerwithoutSlideLayout.cshtml";
+
+    decimal Subtotal= 0;
+    decimal  Total= 0;
+    int? countSavedproducts = 0;
+    List<Product>? productSelected =new List<Product>();
+    
+
+    @foreach(var product in Model)
+    {
+        Subtotal += product.Price;
+    }
+    Total = 150+Subtotal;
+    if(HttpContextAccessor.HttpContext.Session.GetString("Savedproducts") != null)
+    {
+        var productsSerialized = HttpContextAccessor.HttpContext.Session.GetString("Savedproducts");
+        productSelected =JsonConvert.DeserializeObject<List<Product>>(productsSerialized);
+        countSavedproducts = HttpContextAccessor.HttpContext.Session.GetInt32("countSavedproducts");
+    }
+    
+   }
+   @if(@HttpContextAccessor.HttpContext.Session.GetInt32("count") != 0)
+    {
+      <div class="container">
+
+      <h2 class="mt-5"><i class="fa fa-shopping-cart"></i> Shooping Cart</h2>
+       <hr>
+
+       <h4 class="mt-5">@HttpContextAccessor.HttpContext.Session.GetInt32("count") items(s) in Shopping Cart</h4>
+
+       <div class="cart-items">
+        
+          <div class="row">
+            
+             <div class="col-md-12">
+                
+                <table class="table">
+                    
+                    <tbody>
+                        
+                        @foreach(var product in Model)
+                        {
+                            @if(product.Quantity > 0)
+                            {
+                                 <tr>
+                            <td><img src="data:image/*;base64,@(Convert.ToBase64String(product.Image))" style="width: 5em"></td>
+                           <td>
+                                <strong>@product.Name</strong>
+                            </td>
+                            
+                            <td>
+        
+                                <a  asp-controller="Customer" asp-action="RemoveProductfromCart" asp-route-productId="@product.Id" >Remove</a><br>
+                                <a asp-controller="Customer" asp-action="SavaProductLaterShopping" asp-route-productId="@product.Id">Save for later</a>
+
+                            </td>
+                            
+                            <td>
+                                <a  asp-controller="Customer" asp-action="IncreaseproductQuantity" asp-route-productId="@product.Id" class="btn btn-outline-info">+</a>
+                               
+                                <strong>@product.Quantity</strong>
+                                 @if(product.Quantity > 0)
+                                    {
+                                    <a asp-controller="Customer" asp-action="DecreaseproductQuantity" asp-route-productId="@product.Id" class="btn btn-outline-info">-</a>
+                                        
+                                    }
+
+                                
+                            </td>
+                            <td>@product.Price EGP</td>
+                        </tr>
+                            }
+                        }
+                        
+                    </tbody>
+
+                </table>
+
+            </div>   
+            <!-- Price Details -->
+                <div class="col-md-6">
+                        <div class="sub-total">
+                             <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Price Details</th>
+                                    </tr>
+                                </thead>
+                                    <tr>
+                                        <td>Subtotal </td>
+                                        <td>@Subtotal </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Text</td>
+                                        <td>150.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total</th>
+                                        <th>@Total</th>
+                                    </tr>
+                             </table>           
+                         </div>
+                    </div>
+                <!-- Save for later  -->
+                <div class="col-md-12">
+                    <a  asp-controller="Customer" asp-action="Index" class="btn btn-outline-dark">Continue Shopping</a>
+                    <a asp-controller="Customer" asp-action="Checkout" class="btn btn-outline-info">Proceed to checkout</a>
+                <hr>
+
+                </div>
+
+                <div class="col-md-12">
+                @if(countSavedproducts> 0 ) 
+                {
+                    <h4>@countSavedproducts items Save for Later</h4>
+                    <table class="table">
+                    
+                      <tbody>
+                        @foreach(var product in productSelected)
+                        {
+                             <tr>
+                            <td><img src="data:image/*;base64,@(Convert.ToBase64String(product.Image))" style="width: 5em"></td>
+                            <td>
+                                <strong>@product.Name</strong>@*<br> @product.Description*@
+                            </td>
+                            
+                            <td>
+        
+                                <a asp-controller="Customer" asp-action="RemoveProductfromLaterList" asp-route-productId="@product.Id">Remove</a><br>
+                                <a asp-controller="Customer" asp-action="AddToCartfromLaterList" asp-route-productId="@product.Id">Add To Cart</a><br>
+
+
+                            </td>
+                            
+                            <td>
+                                <strong>@product.Quantity</strong>
+                                @*<select name="" id="" class="form-control" style="width: 4.7em">
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                </select>*@
+                            </td>
+                            
+                            <td>@product.Price</td>
+                        </tr>
+                        }
+                       
+                    </tbody>
+
+                  </table>
+                }
+               
+
+            </div>  
+                </div>
+
+
+            </div>
+        </div>
+<!-- /.container -->
+}
+else
+{
+    <h1>CartShoppingEmpty</h1>
+<i class="fa fa-cart-plus "></i>
+ <a  asp-controller="Customer" asp-action="Index" class="btn btn-outline-dark">Staring Shopping</a>
+}
+
+
+

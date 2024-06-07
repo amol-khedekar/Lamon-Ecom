@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    int mySessionObject;
+    if (HttpContextAccessor.HttpContext.Session.GetInt32("count") != null)
+        //Get object from session
+        mySessionObject = (int) HttpContextAccessor.HttpContext.Session.GetInt32("count");
+    else
+        mySessionObject = 0;
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+     <!-- Custom styles for this template-->
+    <link href="~/AdminStyle/css/sb-admin.css" rel="stylesheet">
+
+   <!-- Bootstrap core CSS -->
+    <link href="~/CustomerStyle/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+              <link href="~/AdminStyle/vendor/fontawesome-free/css/all.css" rel="stylesheet" type="text/css">
+    <!-- Custom styles for this template -->
+    <link href="~/CustomerStyle/css/heroic-features.css" rel="stylesheet">
+    
+   
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/customer/index">Lamon</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+            <form asp-action="SearchOfproducts" asp-controller="Customer">
+            <div class="input-group">
+               
+            
+                <input   type="text"  name = "productName"  placeholder="search here"
+                id="form1" class="form-control" width="200px" />
+               <button type="submit" class="btn btn-primary">
+               <i class="fas fa-search"></i>
+              </button>
+            
+
+            
+              @*<input  type="search" placeholder="search here" id="form1" class="form-control" width="200px" />
+  
+
+               <button type="button" class="btn btn-primary">
+               <i class="fas fa-search"></i>
+              </button>*@
+</div>
+           </form> 
+            </li>
+                <li class="nav-item">
+                    <a class="nav-link"  asp-controller="Customer" asp-action="Cart"><i class="fa fa-shopping-cart"></i> Cart <strong>@mySessionObject</strong>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user"></i> Account
+                    </a>
+                    @if (!SignInManager.IsSignedIn(User))
+                    {
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
+                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
+                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Sign Up</a>
+                        </div>
+                    }
+                    else
+                        {
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
+                              <a class="dropdown-item" asp-action="Logout" asp-controller="Customer">Logout</a>
+                              <a class="dropdown-item" asp-action="CustomerOrders" asp-controller="Customer">Orders</a>
+                              <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"> <i class="fa fa-user"></i> Account</a>
+                            </div>
+                        }
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+  
+
+ <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="sidebar navbar-nav">
+          @*  <li class="nav-item active">
+                <a class="nav-link" href="../Admin/Dashboard">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>*@
+            </li>
+            @foreach(var category in ViewBag.NamesCategories)
+            {
+              <li class="nav-item">
+                <a class="nav-link" asp-controller="Customer" asp-action="productsOfCategory" asp-route-categoryName=@category>
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>@category</span>
+                </a>
+              </li>
+            }
+           
+        </ul>
+    <div>
+        @RenderBody()
+    </div>
+   </div>
+
+
+
+   <script src="~/CustomerStyle/vendor/jquery/jquery.min.js"></script>
+   <script src="~/CustomerStyle/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

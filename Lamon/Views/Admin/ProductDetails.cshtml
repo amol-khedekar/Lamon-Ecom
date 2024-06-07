@@ -1,0 +1,67 @@
+﻿@model Product
+@{
+    ViewData["Title"] = "ProductDetails";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>ProductDetails</h1>
+
+<div class="container">
+
+    <form asp-action="AddProduct" asp-controller="Admin" asp-antiforgery="true" method="post" style="width:50%" enctype="multipart/form-data">
+        <div asp-validation-summary="None" class="text-danger"></div>
+        <div>
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" disabled/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="IsActive"></label>
+            <input asp-for="IsActive" class="form-control" disabled/>
+            <span asp-validation-for="IsActive" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="CategoryId"> Category</label>
+            <input asp-for="Category.Name"  class="form-control" disabled/>
+            @*<select asp-for="CategoryId" asp-items="categories" class="form-control">
+            </select>*@
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Description"></label>
+            <input asp-for="Description" class="form-control" disabled/>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+       <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Image" class="w-100"></label>
+                @if (Model.Image != null)
+                {
+                    <img id="imageProduct" alt="profile" class="profile-picture" src="data:image/*;base64,@(Convert.ToBase64String(Model.Image))" />
+                }
+                <div class="custom-file mt-2">
+                    <input type="file"
+                           accept="image/*"
+                           asp-for="Image"
+                           class="custom-file-input"
+                           disabled
+                           onchange="document.getElementById('imageProduct').src = window.URL.createObjectURL(this.files[0])" />
+                    @*<label class="custom-file-label" asp-for="Image">choose picture...</label>*@
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div>
+            <label asp-for="Quantity"></label>
+            <input asp-for="Quantity" class="form-control" disabled/>
+            <span asp-validation-for="Quantity" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Price"></label>
+            <input asp-for="Price" class="form-control" disabled/>
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        @*<input type="submit" class="btn btn-success" value="Save" />*@
+    </form>
+
+</div>

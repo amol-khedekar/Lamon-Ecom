@@ -1,0 +1,41 @@
+﻿@model Product
+@{
+    ViewData["Title"] = "DetailsOfProduct";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+<div class="container">
+      <div class="row"> 
+
+        <div class="col-md-7">  
+    <h2>@Model.Name</h2>
+    <br/>
+   <h3>Product details:</h3>
+    <h4>@Model.Description</h4>
+    <br/>
+    <h2>@Model.Price EGP</h2>
+    <br/>
+    @if( ViewBag.Isadded == true)
+     {
+              <a  asp-controller="Customer" asp-action="IncreaseproductQuantityfromdetails" asp-route-productId="@Model.Id" class="btn btn-outline-info">+</a>
+                                <strong>@Model.Quantity</strong>
+                                @if(Model.Quantity > 0)
+                                    {
+                                    <a asp-controller="Customer" asp-action="DecreaseproductQuantityfromdetails" asp-route-productId="@Model.Id" class="btn btn-outline-info">-</a>
+                                    }
+    }
+    else
+    {
+       <a  asp-controller="Customer" asp-action="AddToCartfromdetails"  asp-route-productId=@Model.Id  class="btn btn-outline-info"><i class="fa fa-cart-plus "></i> Add To
+                        Cart</a>
+     }
+            
+
+    </div>
+
+     <div class="col-md-2">
+       @if (Model.Image != null)
+                {
+                    <img id="imageProduct"  style="width: 30em" src="data:image/*;base64,@(Convert.ToBase64String(Model.Image))" />
+                }
+
+    </div>

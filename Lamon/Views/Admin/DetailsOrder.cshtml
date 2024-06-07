@@ -1,0 +1,138 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "DetailsOrder";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    decimal Subtotal = Model.TotalPrice - 150;
+    int Startplace = 0;
+}
+
+<div class="container">
+
+    <h2 class="mt-5"><i class="fa  fa-credit-card-alt"></i> Checkout</h2>
+    <hr>
+
+
+        <div class="row"> 
+
+        <div class="col-md-7">  
+            <h4>Billing Details</h4>
+
+               <form >
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                       <label asp-for="Email"></label>
+                       <input asp-for="Email" class="form-control" placeholder="Email" disabled/>
+                       <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label asp-for="Name"></label>
+                       <input asp-for="Name" class="form-control" placeholder="Name" disabled/>
+                       <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                       <label asp-for="Address"></label>
+                       <input asp-for="Address" class="form-control" placeholder="Address"disabled/>
+                       <span asp-validation-for="Address" class="text-danger"></span>
+                  </div>
+                  <div class="form-row">
+                      <label asp-for="City"></label>
+                       <input asp-for="City" class="form-control" placeholder="City" disabled/>
+                       <span asp-validation-for="City" class="text-danger"></span>
+                  </div>
+                  <div class="form-group">
+                    <label asp-for="Phone"></label>
+                       <input asp-for="Phone" class="form-control" placeholder="Phone" disabled/>
+                       <span asp-validation-for="Phone" class="text-danger"></span>
+                  </div>
+                  <hr>
+                  <h5><i class="fa fa-credit-card"></i> Payment Details</h5>
+
+                  <div class="form-group">
+                     <label asp-for="NameonCard"></label>
+                       <input asp-for="NameonCard" class="form-control" placeholder="Name on Card"disabled/>
+                       <span asp-validation-for="NameonCard" class="text-danger"></span>
+                  </div>
+
+                  <div class="form-group">
+                       <label asp-for="CreditcardNumber"></label>
+                       <input asp-for="CreditcardNumber" class="form-control" placeholder="Credit Card Number" disabled/>
+                       <span asp-validation-for="CreditcardNumber" class="text-danger"></span>
+                  </div>
+                  <input asp-for="TotalPrice"  class="form-control" hidden/>
+                  <a  asp-controller="Admin" asp-action="Orders" class="btn btn-outline-info col-md-12">Back to Orders</a>
+                </form>
+
+            </div>
+
+            <div class="col-md-5">
+                
+            <h4>Your Order</h4>
+                
+                <table class="table your-order-table">
+                    <tr>
+                        <th>Image</th>
+                        <th>Details</th>
+                        <th>Qty</th>
+                    </tr>
+                    @foreach(var orderProduct in Model.OrderProducts)
+                    {
+                      
+                       <tr>
+                        <td><img src="data:image/*;base64,@(Convert.ToBase64String(orderProduct.Product.Image))" alt="" style="width: 4em"></td>
+                        <td>
+                            <strong>@orderProduct.Product.Name</strong><br>
+                            @orderProduct.Product.Description <br> 
+                            <span class="text-dark">@orderProduct.Product.Price</span>
+                        </td>
+                        
+                         <td>
+                            @for(int i = Startplace; i<  Model.Quantities.Length;i++)
+                            {
+                                  if(Model.Quantities[i].Equals('_'))
+                                  {
+                                    Startplace = i+1;
+                                    <br/>
+                                    break;
+                                  }
+                                  else
+                                  {
+                                   <span class="badge badge-light"> @Model.Quantities[i]</span>
+                                   }
+                              }
+                            
+                        </td>
+                      </tr>
+                   }
+                
+                   
+                </table>
+
+                <hr>
+                <table class="table your-order-table table-bordered">
+                    <tr>
+                        <th colspan="2" ">Price Details</th>
+                    </tr>
+                    <tr>
+                        <td>Subtotal</td>
+                        <td>@Subtotal</td>
+                    </tr>
+                    <tr>
+                        <td>Tax</td>
+                        <td>$150</td>
+                    </tr>
+                    <tr>
+                        <th>Total</th>
+                        <th>@Model.TotalPrice</th>
+                    </tr>
+                    
+                </table>
+
+            </div>
+        </div>
+
+</div>
+<!-- /.container -->
+
+<div class="mt-5

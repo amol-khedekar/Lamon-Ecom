@@ -1,0 +1,90 @@
+﻿@model Category
+@{
+    ViewData["Title"] = "CategoryDetails";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    
+    SelectList products = new SelectList(Model.Products,"Id","Name");
+    int count = 0;
+}
+
+<h1>CategoryDetails</h1>
+
+<div class="container">
+
+    <form asp-action="AddProduct" asp-controller="Admin" asp-antiforgery="true" method="post" style="width:50%" enctype="multipart/form-data">
+        <div asp-validation-summary="None" class="text-danger"></div>
+        <div>
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" disabled/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="IsActive"></label>
+            <input asp-for="IsActive" class="form-control" disabled/>
+            <span asp-validation-for="IsActive" class="text-danger"></span>
+        </div>
+       @* <div>
+            <label asp-for="Products"></label>
+            <input asp-for="Products.Name"  class="form-control" disabled/>
+            <select asp-for="Products" asp-items="products" class="form-control">
+            </select>
+            <span asp-validation-for="Products" class="text-danger"></span>
+        </div>*@
+        
+    </form>
+
+   <div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table"></i>
+        Product
+        <a asp-action="AddProduct" asp-controller="Admin" class="btn btn-info pull-right fa fa-plus">Add New</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Category Name</th>
+                        <th>product Name</th>
+                        <th>product Image</th>
+                        <th>Action</th>
+
+                    </tr>
+                </thead>
+             @*   <tfoot>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Product</th>
+                        <th>Action</th>
+                    </tr>
+                </tfoot>*@
+                <tbody>
+                    @foreach (var item in Model.Products)
+                    {
+                         count += 1;
+                        <tr>
+                            <td>@count</td>
+                            <td>@item.Category.Name</td>
+                            <td>@item.Name</td>
+                            <td><img src="data:image/*;base64,@(Convert.ToBase64String(item.Image))" style="width: 5em"></td>
+                            
+                            <td>
+                           
+                                @Html.ActionLink("Edit", "UpdateProduct", new { id = item.Id })
+                                @Html.ActionLink("Details", "ProductDetails", new { id = item.Id })
+                                @Html.ActionLink("Delete", "DeleteProduct", new { id = item.Id })
+                            </td>
+
+                        </tr>
+                        
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+</div>

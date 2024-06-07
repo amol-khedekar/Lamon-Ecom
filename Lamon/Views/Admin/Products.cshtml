@@ -1,0 +1,61 @@
+﻿@model List<Product>
+
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int count = 0;
+}
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table"></i>
+        Product
+        <a  asp-action="AddProduct" asp-controller="Admin" class="btn btn-info pull-right fa fa-plus">Add New</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Category Name</th>
+                        <th>product Name</th>
+                        <th>product Image</th>
+                        <th>Action</th>
+
+                    </tr>
+                </thead>
+             @*   <tfoot>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Product</th>
+                        <th>Action</th>
+                    </tr>
+                </tfoot>*@
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                         count += 1;
+                        <tr>
+                            <td>@count</td>
+                            <td>@item.Category.Name</td>
+                            <td>@item.Name</td>
+                            <td><img src="data:image/*;base64,@(Convert.ToBase64String(item.Image))" style="width: 5em"></td>
+                            
+                            <td>
+                           
+                                @Html.ActionLink("Edit", "UpdateProduct", new { id = item.Id })
+                                @Html.ActionLink("Details", "ProductDetails", new { id = item.Id })
+                                @Html.ActionLink("Delete", "DeleteProduct", new { id = item.Id })
+                            </td>
+
+                        </tr>
+                        
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
