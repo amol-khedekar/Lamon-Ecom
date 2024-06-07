@@ -1,13 +1,33 @@
 # Lamon-Ecom
 
+**Lamon Ecom - Online Shopping Store Website**
 
-Lamon Ecom -Online Shopping Store Website. This web app allows customers to buy and sell products on an Online Portal.Through an e-commerce website, a business person can process orders, manage shipping and logistics, and provide customer service.
-Admin who has responsibility To manage this web app, can manage categories and products along with ability manage customer orders and know their details.
+Lamon Ecom is a web application that allows customers to buy and sell products on an online portal. This comprehensive e-commerce platform enables business owners to process orders, manage shipping and logistics, and provide customer service. An admin is responsible for managing categories and products, overseeing customer orders, and accessing order details.
 
-# Technologies
+## Key Features
 
-- ASP.Net - MVC, Web API
-- Entity Framework
-- MS SQL Server
-- Identity for User Management
+- **Customer Features:**
+  - Browse and search for products.
+  - Add products to the shopping cart.
+  - Checkout and place orders.
+  - View order history.
 
+- **Seller Features:**
+  - List products for sale.
+  - Manage inventory and update product details.
+  - View and manage orders received.
+
+- **Admin Features:**
+  - Manage product categories.
+  - Add, update, and delete products.
+  - View and manage customer orders.
+  - Access detailed order information.
+
+## Technologies Used
+
+- **ASP.NET - MVC** 
+- **Entity Framework** 
+- **MS SQL Server** 
+- **ASP.NET Identity for User Management** 
+- **HTML** 
+- **CSS** 
